@@ -190,9 +190,9 @@
   .hero-grid-lines .tick { fill: none; stroke: var(--accent-line); stroke-width: 1; }
   .hero-grid-lines .tick-x { stroke: var(--accent-line); stroke-width: 1; fill: none; }
 
-  .hero-mono { position: absolute; right: 1%; top: 50%; transform: translateY(-54%); width: min(46vw, 620px); height: auto; z-index: -1; opacity: 0; transition: opacity 1.3s var(--ease); }
-  .hero-mono.show { opacity: 0.95; }
-  @media (max-width: 980px) { .hero-mono { width: 60vw; opacity: 0.5 !important; right: -8%; } }
+  .hero-mono { position: absolute; right: 3%; top: 50%; transform: translateY(-54%); width: min(36vw, 480px); height: auto; z-index: -1; opacity: 0; transition: opacity 1.3s var(--ease); }
+  .hero-mono.show { opacity: 0.5; }
+  @media (max-width: 1180px) { .hero-mono { display: none; } }
 
   .axis-gizmo { position: absolute; left: 32px; bottom: 30px; width: 62px; height: 62px; z-index: 1; opacity: 0.6; }
   .axis-gizmo path, .axis-gizmo rect { fill: none; stroke: var(--text-faint); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
@@ -224,7 +224,7 @@
   .hero-role {
     font-size: clamp(17px, 2vw, 22px);
     color: var(--text-soft);
-    max-width: 640px;
+    max-width: 460px;
     margin: 22px 0 0;
   }
 
@@ -295,6 +295,11 @@
   .chip-icon:has(use[href="#i-git"]) { color: #FF6E52; }
   .chip-icon:has(use[href="#i-multitenant"]) { color: var(--accent); }
   .chip-icon:has(use[href="#i-testing"]) { color: #4ADE80; }
+  .chip-icon:has(use[href="#i-context"]) { color: var(--accent-2); }
+  .chip-icon:has(use[href="#i-cpanel"]) { color: #FF7A45; }
+  .chip-icon:has(use[href="#i-agile"]) { color: var(--accent); }
+  .chip-icon:has(use[href="#i-securecoding"]) { color: #4ADE80; }
+  .chip-icon:has(use[href="#i-queryopt"]) { color: #FBBF24; }
 
   /* ---------- Marquee ---------- */
   .marquee { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); overflow: hidden; padding: 22px 0; }
@@ -542,6 +547,28 @@
     <path d="M9 3h6M10 3v5.5L5.5 17a2 2 0 0 0 1.8 3h9.4a2 2 0 0 0 1.8-3L14 8.5V3"/>
     <path d="M8.5 13h7"/>
   </symbol>
+  <symbol id="i-context" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="18" height="18" rx="2"/>
+    <rect x="7.5" y="7.5" width="9" height="9" rx="1.3"/>
+  </symbol>
+  <symbol id="i-cpanel" viewBox="0 0 24 24">
+    <path d="M4 16a8 8 0 1 1 16 0"/>
+    <path d="M12 16l4-5"/>
+    <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="i-agile" viewBox="0 0 24 24">
+    <rect x="3" y="4" width="5" height="16" rx="1"/>
+    <rect x="9.5" y="4" width="5" height="10" rx="1"/>
+    <rect x="16" y="4" width="5" height="13" rx="1"/>
+  </symbol>
+  <symbol id="i-securecoding" viewBox="0 0 24 24">
+    <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/>
+    <rect x="9.3" y="11.3" width="5.4" height="4.2" rx=".6"/>
+    <path d="M10.2 11.3V9.6a1.8 1.8 0 0 1 3.6 0v1.7"/>
+  </symbol>
+  <symbol id="i-queryopt" viewBox="0 0 24 24">
+    <path d="M13 3L4 14h6l-1 7 9-11h-6z"/>
+  </symbol>
 </defs>
 </svg>
 
@@ -779,6 +806,7 @@
             <span class="chip"><svg class="chip-icon"><use href="#i-nextjs"/></svg>Next.js</span>
             <span class="chip"><svg class="chip-icon"><use href="#i-tanstack"/></svg>TanStack Query</span>
             <span class="chip"><svg class="chip-icon"><use href="#i-redux"/></svg>Redux Toolkit</span>
+            <span class="chip"><svg class="chip-icon"><use href="#i-context"/></svg>Context API</span>
             <span class="chip"><svg class="chip-icon"><use href="#i-typescript"/></svg>TypeScript</span>
             <span class="chip"><svg class="chip-icon"><use href="#i-tailwind"/></svg>Tailwind CSS</span>
             <span class="chip"><svg class="chip-icon"><use href="#i-mui"/></svg>Material UI</span>
@@ -808,6 +836,7 @@
             <span class="chip"><svg class="chip-icon"><use href="#i-mongodb"/></svg>MongoDB</span>
             <span class="chip"><svg class="chip-icon"><use href="#i-stripe"/></svg>Stripe</span>
             <span class="chip"><svg class="chip-icon"><use href="#i-shield"/></svg>SSLCommerz</span>
+            <span class="chip"><svg class="chip-icon"><use href="#i-queryopt"/></svg>Query Optimization</span>
           </div>
         </div>
         <div class="skill-group" style="--i:3">
@@ -815,10 +844,13 @@
           <div class="chips">
             <span class="chip"><svg class="chip-icon"><use href="#i-linux"/></svg>Linux</span>
             <span class="chip"><svg class="chip-icon"><use href="#i-server"/></svg>Nginx</span>
+            <span class="chip"><svg class="chip-icon"><use href="#i-cpanel"/></svg>cPanel</span>
             <span class="chip"><svg class="chip-icon"><use href="#i-cicd"/></svg>CI/CD</span>
             <span class="chip"><svg class="chip-icon"><use href="#i-git"/></svg>Git</span>
             <span class="chip"><svg class="chip-icon"><use href="#i-multitenant"/></svg>Multi-tenant Architecture</span>
+            <span class="chip"><svg class="chip-icon"><use href="#i-agile"/></svg>Agile / Scrum</span>
             <span class="chip"><svg class="chip-icon"><use href="#i-testing"/></svg>Unit Testing</span>
+            <span class="chip"><svg class="chip-icon"><use href="#i-securecoding"/></svg>Secure Coding</span>
           </div>
         </div>
       </div>
