@@ -1,7 +1,9 @@
 <title>Mostofa Shahid</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Fraunces:ital,wght@1,500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { corePlugins: { preflight: false } };</script>
 <style>
   :root {
     --ink: #0E1114;
@@ -198,9 +200,58 @@
   .hero-grid-lines .tick { fill: none; stroke: var(--accent-line); stroke-width: 1; }
   .hero-grid-lines .tick-x { stroke: var(--accent-line); stroke-width: 1; fill: none; }
 
-  .hero-mono { position: absolute; right: 3%; top: 50%; transform: translateY(-54%); width: min(36vw, 480px); height: auto; z-index: -1; opacity: 0; transition: opacity 1.3s var(--ease); }
-  .hero-mono.show { opacity: 0.5; }
-  @media (max-width: 1180px) { .hero-mono { display: none; } }
+  .hero-photo-wrap {
+    position: absolute; right: 4%; top: 50%; width: min(34vw, 440px); z-index: -1;
+    opacity: 0; transform: translateY(-52%);
+    transition: opacity 1.1s var(--ease);
+    animation: photo-float 7s ease-in-out infinite;
+    animation-play-state: paused;
+  }
+  .hero-photo-wrap.show { opacity: 1; animation-play-state: running; }
+  @keyframes photo-float { 0%, 100% { margin-top: 0; } 50% { margin-top: -14px; } }
+  .hero-photo-glow {
+    position: absolute; inset: -18%; z-index: -1; border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in oklab, var(--accent) 22%, transparent) 0%, transparent 70%);
+    animation: glow-pulse 5s ease-in-out infinite;
+  }
+  @keyframes glow-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+  .hero-photo {
+    position: relative; border-radius: 7px; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--rule);
+    box-shadow: 0 30px 70px -20px rgba(0,0,0,0.55);
+    transform: perspective(1200px) rotateX(var(--rx, 5deg)) rotateY(var(--ry, -7deg));
+    transition: transform 0.25s var(--ease), box-shadow 0.3s ease;
+    will-change: transform;
+  }
+  .hero-photo::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+    background: radial-gradient(280px circle at var(--px, 50%) var(--py, 50%), color-mix(in oklab, var(--accent) 18%, transparent), transparent 70%);
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .hero-photo:hover::after { opacity: 1; }
+  .hero-photo:hover { box-shadow: 0 34px 80px -18px color-mix(in oklab, var(--accent) 30%, transparent); }
+  /* ---------- Window chrome (reused: hero photo, contact JSON) ---------- */
+  .win-bar {
+    display: flex; align-items: center; gap: 6px; padding: 10px 12px;
+    background: var(--surface-2); border-bottom: 1px solid var(--rule);
+  }
+  .win-bar .win-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .win-bar .win-dot-r { background: #FF5F56; }
+  .win-bar .win-dot-y { background: #FFBD2E; }
+  .win-bar .win-dot-g { background: #27C93F; }
+  .win-tab {
+    margin-left: 8px; font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); letter-spacing: 0.02em;
+  }
+  .hero-photo-body { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
+  .hero-photo-body img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(0.2) contrast(1.05); }
+  @media (max-width: 1180px) {
+    .hero { flex-direction: column; padding-bottom: 50px; }
+    .hero-inner { order: 1; }
+    .hero-photo-wrap {
+      position: static; order: 2; width: min(420px, 86vw);
+      margin: 32px auto 0; top: auto; right: auto; transform: none;
+    }
+  }
 
   .axis-gizmo { position: absolute; left: 32px; bottom: 30px; width: 62px; height: 62px; z-index: 1; opacity: 0.6; }
   .axis-gizmo path, .axis-gizmo rect { fill: none; stroke: var(--text-faint); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
@@ -228,6 +279,15 @@
   .hero h1 .line:nth-child(2) span { animation-delay: 0.68s; }
   @keyframes line-up { to { opacity: 1; transform: translateY(0); } }
   .hero h1 .last { color: var(--accent); }
+  .hero h1 .qt { color: var(--text-faint); font-family: var(--font-mono); font-weight: 500; font-size: 0.45em; vertical-align: 0.32em; }
+  .hero h1 .code-semi { color: var(--text-faint); font-family: var(--font-mono); font-weight: 500; font-size: 0.45em; vertical-align: -0.02em; margin-left: 2px; }
+
+  .hero-code-label {
+    font-family: var(--font-mono); font-size: clamp(13px, 1.3vw, 15px);
+    color: var(--text-faint); margin: 18px 0 0; display: flex; gap: 9px; align-items: center;
+  }
+  .hero-code-label .kw { color: #C586C0; }
+  .hero-code-label .fn { color: #4EC9B0; }
 
   .hero-role {
     font-size: clamp(17px, 2vw, 22px);
@@ -336,6 +396,7 @@
   section .wrap, footer .wrap { position: relative; z-index: 1; }
   .section-head { margin-bottom: 54px; }
   .section-head h2 { font-size: clamp(28px, 3.4vw, 38px); margin-top: 14px; }
+  .accent-serif { font-family: 'Fraunces', var(--font-display); font-style: italic; font-weight: 500; }
 
   [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
   [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
@@ -358,7 +419,7 @@
   .about-grid { display: grid; grid-template-columns: 0.8fr 1.1fr 0.85fr; gap: 48px; align-items: start; }
   .about-grid p { font-size: 18px; color: var(--text-soft); max-width: 56ch; }
   .about-grid p + p { margin-top: 18px; }
-  .about-side { font-family: var(--font-mono); font-size: 13.5px; color: var(--text-soft); border-left: 1px solid var(--rule); padding-left: 24px; display: flex; flex-direction: column; gap: 14px; }
+  .about-side { align-self: stretch; font-family: var(--font-mono); font-size: 13.5px; color: var(--text-soft); border-left: 1px solid var(--rule); padding-left: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; }
   .about-side .k { color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
   .about-side .v { color: var(--text); }
   @media (max-width: 1040px) { .about-grid { grid-template-columns: 1fr; } .about-photos { max-width: 320px; } }
@@ -423,7 +484,13 @@
   .card-link.disabled { color: var(--text-faint); }
 
   /* ---------- Skills ---------- */
-  .skill-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 34px; }
+  .skill-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 24px; }
+  .skill-group {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 7px; padding: 26px;
+    transition: border-color 0.25s ease;
+  }
+  .skill-group:hover { border-color: var(--accent-line); }
+  .skill-group-wide { grid-column: 1 / -1; }
   .skill-group h3 { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-faint); font-weight: 600; margin-bottom: 14px; }
   .skill-group .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 
@@ -456,6 +523,55 @@
   }
   .contact-links a:hover { border-color: var(--accent-line); color: var(--accent); transform: translateY(-3px); }
   .foot-bottom { margin-top: 90px; padding-top: 26px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-family: var(--font-mono); font-size: 12.5px; color: var(--text-faint); }
+
+  .contact-panel { display: grid; grid-template-columns: 1.35fr 1fr; gap: 28px; margin-top: 54px; align-items: start; }
+  @media (max-width: 900px) { .contact-panel { grid-template-columns: 1fr; } }
+
+  .contact-json {
+    border: 1px solid var(--rule); border-radius: 7px; overflow: hidden;
+    background: var(--surface); box-shadow: 0 30px 70px -30px rgba(0,0,0,0.5);
+  }
+  .json-body {
+    margin: 0; padding: 26px 24px; overflow-x: auto;
+    font-family: var(--font-mono); font-size: 13px; line-height: 1.95; color: var(--text-soft);
+  }
+  .json-body .jk { color: var(--accent-2); }
+  .json-body .js { color: var(--accent); }
+  .json-body .jc { color: var(--text-faint); font-style: italic; }
+
+  .contact-side { display: flex; flex-direction: column; gap: 20px; }
+
+  .contact-photo-card { width: 100%; }
+  .contact-photo-body { position: relative; aspect-ratio: 1 / 1; overflow: hidden; }
+  .contact-photo-body img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; display: block; filter: grayscale(0.35) contrast(1.05); }
+  .photo-status {
+    position: absolute; top: 12px; left: 12px; z-index: 2;
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--text);
+    background: color-mix(in oklab, var(--ink) 55%, transparent); backdrop-filter: blur(6px);
+    padding: 5px 10px; border-radius: 3px; border: 1px solid var(--rule);
+  }
+  .photo-status .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #27C93F; animation: glow-pulse 1.8s ease-in-out infinite; flex-shrink: 0; }
+
+  .connect-card { border: 1px solid var(--rule); border-radius: 7px; padding: 24px; background: var(--surface); }
+  .connect-card h3 { font-size: 18px; margin: 0 0 16px; }
+  .connect-row {
+    display: flex; align-items: center; gap: 11px;
+    padding: 13px 0; border-top: 1px solid var(--rule);
+    font-family: var(--font-mono); font-size: 13px; color: var(--text-soft);
+    transition: color 0.2s ease, padding-left 0.2s ease;
+  }
+  .connect-row svg { color: var(--text-faint); flex-shrink: 0; transition: color 0.2s ease; }
+  .connect-row:hover { color: var(--accent); padding-left: 5px; }
+  .connect-row:hover svg { color: var(--accent); }
+  .connect-cta {
+    margin-top: 18px; width: 100%; justify-content: center;
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+    background: var(--accent); color: var(--ink); border-radius: 3px; padding: 14px 18px;
+    transition: transform 0.15s var(--ease), box-shadow 0.2s ease;
+  }
+  .connect-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -12px color-mix(in oklab, var(--accent) 55%, transparent); }
 </style>
 
 <svg class="noise" xmlns="http://www.w3.org/2000/svg">
@@ -695,7 +811,18 @@
   </svg>
   <div class="hero-frame-v"></div>
   <div class="hero-frame-h"></div>
-  <svg class="hero-mono" id="mono-mark" viewBox="0 0 460 300" aria-hidden="true"></svg>
+  <div class="hero-photo-wrap" id="hero-photo-wrap">
+    <div class="hero-photo-glow"></div>
+    <div class="hero-photo tilt">
+      <div class="win-bar">
+        <span class="win-dot win-dot-r"></span><span class="win-dot win-dot-y"></span><span class="win-dot win-dot-g"></span>
+        <span class="win-tab">mostofa.dev</span>
+      </div>
+      <div class="hero-photo-body">
+        <img src="img/hero-workspace.jpg" alt="Mostofa coding at his desk" loading="lazy">
+      </div>
+    </div>
+  </div>
   <svg class="axis-gizmo" viewBox="0 0 90 90" aria-hidden="true">
     <path d="M14 76V26M14 76H62M14 76L40 56"/>
     <path d="M14 26l-4.5 6.5M14 26l4.5 6.5M62 76l-6.5-4M62 76l-6.5 4M40 56l-3 7.5M40 56l6.5 2.5"/>
@@ -706,9 +833,10 @@
   </svg>
   <div class="wrap hero-inner stagger">
     <span class="eyebrow" style="--i:0">Software Engineer &middot; Dhaka, Bangladesh</span>
+    <div class="hero-code-label" style="--i:1"><span class="kw">const</span> <span class="fn">developer</span> <span class="op">=</span></div>
     <h1>
-      <span class="line"><span style="animation-delay:.55s">Md. Mostofa</span></span>
-      <span class="line"><span class="last" style="animation-delay:.68s">Shahid.</span></span>
+      <span class="line"><span class="qt">&quot;</span><span style="animation-delay:.55s">Md. Mostofa</span></span>
+      <span class="line"><span class="last" style="animation-delay:.68s">Shahid</span><span class="qt">&quot;</span><span class="code-semi">;</span></span>
     </h1>
     <p class="hero-role" style="--i:2">Full-stack engineer building multi-tenant SaaS and government platforms &mdash; React &amp; Next.js on the front, Node.js &amp; NestJS on the back, PostgreSQL underneath.</p>
     <div class="term" style="--i:3"><span class="prompt">$</span><span id="term-text"></span><span class="cursor"></span></div>
@@ -862,7 +990,7 @@
     <div class="wrap">
       <div class="section-head" data-reveal>
         <span class="eyebrow">04 &middot; Skills</span>
-        <h2><span class="rline"><span>The stack, end to end.</span></span></h2>
+        <h2><span class="rline"><span>The stack, <em class="accent-serif">end to end.</em></span></span></h2>
       </div>
       <div class="skill-groups" data-reveal-group>
         <div class="skill-group" style="--i:0">
@@ -919,7 +1047,7 @@
             <span class="chip"><svg class="chip-icon"><use href="#i-securecoding"/></svg>Secure Coding</span>
           </div>
         </div>
-        <div class="skill-group" style="--i:4">
+        <div class="skill-group skill-group-wide" style="--i:4">
           <h3>AI &amp; Prompt Engineering</h3>
           <div class="chips">
             <span class="chip"><svg class="chip-icon"><use href="#i-claude"/></svg>Claude</span>
@@ -980,10 +1108,73 @@
       <span class="eyebrow">07 &middot; Contact</span>
       <h2><span class="rline"><span>Let's build something.</span></span></h2>
     </div>
-    <div class="contact-links" data-reveal>
-      <a class="magnetic" href="mailto:mostofa.s.cse@gmail.com">mostofa.s.cse@gmail.com &nbsp;&rarr;</a>
-      <a class="magnetic" href="https://github.com/mostofa-s-cse" target="_blank" rel="noopener">github.com/mostofa-s-cse &nbsp;&rarr;</a>
-      <a class="magnetic" href="https://www.linkedin.com/in/md-mostofa-shahid" target="_blank" rel="noopener">linkedin.com/in/md-mostofa-shahid &nbsp;&rarr;</a>
+    <div class="contact-panel" data-reveal>
+      <div class="contact-json">
+        <div class="win-bar">
+          <span class="win-dot win-dot-r"></span><span class="win-dot win-dot-y"></span><span class="win-dot win-dot-g"></span>
+          <span class="win-tab">contact.json</span>
+        </div>
+        <pre class="json-body"><code>{
+  <span class="jk">"name"</span>: <span class="js">"Md. Mostofa Shahid"</span>,
+  <span class="jk">"role"</span>: <span class="js">"Full-Stack Developer"</span>,
+  <span class="jk">"location"</span>: <span class="js">"Dhaka, Bangladesh"</span>,
+  <span class="jk">"status"</span>: <span class="js">"Open to interesting problems"</span>,
+
+  <span class="jc">// Current</span>
+  <span class="jk">"company"</span>: <span class="js">"Shomvob Technologies Ltd"</span>,
+
+  <span class="jk">"experience"</span>: [
+    {
+      <span class="jk">"company"</span>: <span class="js">"Shomvob Technologies"</span>,
+      <span class="jk">"role"</span>: <span class="js">"Full Stack Developer"</span>,
+      <span class="jk">"years"</span>: <span class="js">"2025 &ndash; Present"</span>
+    },
+    {
+      <span class="jk">"company"</span>: <span class="js">"Nextbit Technologies"</span>,
+      <span class="jk">"role"</span>: <span class="js">"Software Engineer"</span>,
+      <span class="jk">"years"</span>: <span class="js">"2024 &ndash; 2025"</span>
+    }
+  ],
+
+  <span class="jk">"education"</span>: {
+    <span class="jk">"degree"</span>: <span class="js">"B.S. Computer Science"</span>,
+    <span class="jk">"institution"</span>: <span class="js">"Northern University Bangladesh"</span>
+  }
+}</code></pre>
+      </div>
+
+      <div class="contact-side">
+        <div class="hero-photo tilt contact-photo-card">
+          <div class="win-bar">
+            <span class="win-dot win-dot-r"></span><span class="win-dot win-dot-y"></span><span class="win-dot win-dot-g"></span>
+            <span class="win-tab">profile.jpg</span>
+          </div>
+          <div class="contact-photo-body">
+            <span class="photo-status"><span class="live-dot"></span>MS.DEV &middot; ONLINE</span>
+            <img src="img/headshot.jpg" alt="Md. Mostofa Shahid" loading="lazy">
+          </div>
+        </div>
+
+        <div class="connect-card">
+          <h3>Connect</h3>
+          <a class="connect-row" href="mailto:mostofa.s.cse@gmail.com">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 6.5l8 6.5 8-6.5"/></svg>
+            mostofa.s.cse@gmail.com
+          </a>
+          <a class="connect-row" href="https://github.com/mostofa-s-cse" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+            github.com/mostofa-s-cse
+          </a>
+          <a class="connect-row" href="https://www.linkedin.com/in/md-mostofa-shahid" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 11v5M8 8v.01M12 16v-3.2c0-1.5.9-2.3 2-2.3s2 .8 2 2.3V16"/></svg>
+            linkedin.com/in/md-mostofa-shahid
+          </a>
+          <a class="connect-cta magnetic" href="mailto:mostofa.s.cse@gmail.com">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 6.5l8 6.5 8-6.5"/></svg>
+            SEND_EMAIL.SH
+          </a>
+        </div>
+      </div>
     </div>
     <div class="foot-bottom">
       <span>&copy; 2026 Md. Mostofa Shahid</span>
@@ -1129,7 +1320,7 @@
   /* ---------- Card tilt + glare ---------- */
   try {
     if (!isTouch) {
-      document.querySelectorAll('.card.tilt').forEach(function (el) {
+      document.querySelectorAll('.card.tilt, .hero-photo.tilt').forEach(function (el) {
         el.addEventListener('mousemove', function (e) {
           var r = el.getBoundingClientRect();
           var px = ((e.clientX - r.left) / r.width);
@@ -1161,36 +1352,11 @@
     }
   } catch (e) {}
 
-  /* ---------- Isometric extruded monogram ---------- */
+  /* ---------- Hero photo reveal ---------- */
   try {
-    var svgns = 'http://www.w3.org/2000/svg';
-    var mono = document.getElementById('mono-mark');
-    if (mono) {
-      var hatchDefs = '<defs><pattern id="mono-hatch" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">' +
-        '<line x1="0" y1="0" x2="0" y2="7" style="stroke:var(--accent);stroke-width:1.4;stroke-opacity:0.55"/></pattern></defs>';
-      mono.insertAdjacentHTML('afterbegin', hatchDefs);
-      var depth = reduced ? 2 : 15;
-      for (var d = depth; d >= 1; d--) {
-        var t = document.createElementNS(svgns, 'text');
-        t.setAttribute('x', 26 + d * 1.55);
-        t.setAttribute('y', 210 + d * 1.55);
-        t.setAttribute('font-family', 'Manrope, sans-serif');
-        t.setAttribute('font-weight', '800');
-        t.setAttribute('font-size', '210');
-        t.setAttribute('style', 'fill:url(#mono-hatch)');
-        t.textContent = 'MS';
-        mono.appendChild(t);
-      }
-      var front = document.createElementNS(svgns, 'text');
-      front.setAttribute('x', 26);
-      front.setAttribute('y', 210);
-      front.setAttribute('font-family', 'Manrope, sans-serif');
-      front.setAttribute('font-weight', '800');
-      front.setAttribute('font-size', '210');
-      front.setAttribute('style', 'fill:var(--ink);stroke:var(--accent);stroke-width:2.2');
-      front.textContent = 'MS';
-      mono.appendChild(front);
-      setTimeout(function () { mono.classList.add('show'); }, reduced ? 0 : 1500);
+    var heroPhoto = document.getElementById('hero-photo-wrap');
+    if (heroPhoto) {
+      setTimeout(function () { heroPhoto.classList.add('show'); }, reduced ? 0 : 1500);
     }
   } catch (e) {}
 
