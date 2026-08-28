@@ -3,7 +3,7 @@
 <title>Mostofa Shahid</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Fraunces:ital,wght@1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@1,500&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config = { corePlugins: { preflight: false } };</script>
 <style>
@@ -20,8 +20,8 @@
     --accent-line: oklch(78% 0.12 72 / 0.35);
     --accent-2: oklch(72% 0.09 195);
     --accent-2-soft: oklch(72% 0.09 195 / 0.12);
-    --font-display: 'Manrope', -apple-system, 'Segoe UI', sans-serif;
-    --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Menlo, monospace;
+    --font-display: 'Space Grotesk', -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
     --max: 1120px;
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -311,6 +311,11 @@
     margin-left: 4px; animation: blink 1s step-end infinite; vertical-align: -3px;
   }
   @keyframes blink { 50% { opacity: 0; } }
+
+  .hero .eyebrow.typing::after, .hero-role.typing::after {
+    content: ""; display: inline-block; width: 2px; height: 0.9em; background: currentColor;
+    margin-left: 2px; vertical-align: -0.15em; animation: blink 1s step-end infinite;
+  }
 
   .hero-ctas { display: flex; gap: 14px; margin-top: 40px; flex-wrap: wrap; }
   .btn {
@@ -1412,21 +1417,39 @@
     }
   } catch (e) {}
 
-  /* ---------- Terminal typing line ---------- */
+  /* ---------- Hero typing sequence ---------- */
   try {
-    var line = "whoami --role=full-stack --stack=react,next,node,nest,pg";
-    var target = document.getElementById('term-text');
-    if (reduced) {
-      target.textContent = line;
-    } else {
+    var typeInto = function (el, speed, text, callback) {
+      if (!el) { if (callback) callback(); return; }
+      if (reduced) { el.textContent = text; if (callback) callback(); return; }
+      el.textContent = '';
+      el.classList.add('typing');
       var i = 0;
       var tick = function () {
-        target.textContent = line.slice(0, i);
+        el.textContent = text.slice(0, i);
         i++;
-        if (i <= line.length) setTimeout(tick, 28);
+        if (i <= text.length) {
+          setTimeout(tick, speed);
+        } else {
+          el.classList.remove('typing');
+          if (callback) callback();
+        }
       };
-      setTimeout(tick, 1400);
-    }
+      tick();
+    };
+    var eyebrowEl = document.querySelector('.hero .eyebrow');
+    var roleEl = document.querySelector('.hero-role');
+    var termEl = document.getElementById('term-text');
+    var eyebrowText = eyebrowEl ? eyebrowEl.textContent : '';
+    var roleText = roleEl ? roleEl.textContent : '';
+    var termText = 'whoami --role=full-stack --stack=react,next,node,nest,pg';
+    setTimeout(function () {
+      typeInto(eyebrowEl, 28, eyebrowText, function () {
+        typeInto(roleEl, 14, roleText, function () {
+          typeInto(termEl, 28, termText);
+        });
+      });
+    }, 200);
   } catch (e) {}
 
   /* ---------- Count-up stats ---------- */
