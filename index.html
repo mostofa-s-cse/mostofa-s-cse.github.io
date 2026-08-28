@@ -135,7 +135,15 @@
     max-width: var(--max); margin: 0 auto; padding: 0 28px;
     height: 64px; display: flex; align-items: center; justify-content: space-between;
   }
-  .brand { font-family: var(--font-mono); font-weight: 600; font-size: 15px; color: var(--text); }
+  .brand {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-family: var(--font-mono); font-weight: 600; font-size: 15px; letter-spacing: 0.02em; color: var(--text);
+  }
+  .brand::before {
+    content: ""; width: 9px; height: 9px; flex-shrink: 0;
+    background-image: linear-gradient(var(--accent-line), var(--accent-line)), linear-gradient(var(--accent-line), var(--accent-line));
+    background-size: 9px 1px, 1px 9px; background-position: center, center; background-repeat: no-repeat;
+  }
   .brand span { color: var(--accent); }
   nav.top ul { position: relative; list-style: none; display: flex; gap: 30px; margin: 0; padding: 0; }
   nav.top a.navlink {
@@ -202,7 +210,7 @@
   .hero-frame-v { position: absolute; left: 3%; top: 0; bottom: 0; width: 1px; background: linear-gradient(180deg, transparent, var(--rule) 15%, var(--rule) 85%, transparent); z-index: -1; }
   .hero-frame-h { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--rule); z-index: -1; }
 
-  .hero-inner { padding: 140px 0 100px; }
+  .hero-inner { width: 100%; padding: 140px 0 100px; }
 
   .stagger > * { opacity: 0; transform: translateY(24px); animation: rise 0.8s var(--ease) forwards; animation-delay: calc(var(--i, 0) * 90ms + 100ms); }
   @keyframes rise { to { opacity: 1; transform: translateY(0); } }
@@ -334,19 +342,45 @@
   [data-reveal-group] > * { opacity: 0; transform: translateY(22px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); transition-delay: calc(var(--i, 0) * 70ms); }
   [data-reveal-group].is-visible > * { opacity: 1; transform: translateY(0); }
 
+  .section-head h2 .rline, .contact-head h2 .rline { display: block; overflow: hidden; }
+  .section-head h2 .rline span, .contact-head h2 .rline span {
+    display: inline-block; opacity: 0; transform: translateY(100%);
+    transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); transition-delay: 0.1s;
+  }
+  .section-head.is-visible h2 .rline span, .contact-head.is-visible h2 .rline span { opacity: 1; transform: translateY(0); }
+
   /* ---------- Stats ---------- */
   .stats { display: flex; gap: 48px; margin-top: 44px; flex-wrap: wrap; }
   .stat b { font-family: var(--font-mono); font-size: 40px; color: var(--accent); display: block; font-weight: 600; }
   .stat span { font-size: 13px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; }
 
   /* ---------- About ---------- */
-  .about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 64px; align-items: start; }
+  .about-grid { display: grid; grid-template-columns: 0.8fr 1.1fr 0.85fr; gap: 48px; align-items: start; }
   .about-grid p { font-size: 18px; color: var(--text-soft); max-width: 56ch; }
   .about-grid p + p { margin-top: 18px; }
   .about-side { font-family: var(--font-mono); font-size: 13.5px; color: var(--text-soft); border-left: 1px solid var(--rule); padding-left: 24px; display: flex; flex-direction: column; gap: 14px; }
   .about-side .k { color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
   .about-side .v { color: var(--text); }
-  @media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 1040px) { .about-grid { grid-template-columns: 1fr; } .about-photos { max-width: 320px; } }
+
+  .about-photos { position: relative; margin-bottom: 8px; }
+  .about-photos::before {
+    content: ""; position: absolute; top: -14px; left: -14px; width: 26px; height: 26px;
+    border-top: 1.5px solid var(--accent); border-left: 1.5px solid var(--accent); z-index: 2; pointer-events: none;
+  }
+  .photo-main {
+    display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 3px;
+    border: 1px solid var(--rule); filter: grayscale(0.6) contrast(1.05);
+    transition: filter 0.6s var(--ease);
+  }
+  .photo-accent {
+    position: absolute; right: -12%; bottom: -13%; width: 48%; aspect-ratio: 4 / 5; object-fit: cover;
+    border-radius: 3px; border: 3px solid var(--ink); box-shadow: 0 20px 40px -14px rgba(0,0,0,0.55);
+    filter: grayscale(0.6); transition: filter 0.6s var(--ease), transform 0.4s var(--ease);
+  }
+  .about-photos:hover .photo-main { filter: grayscale(0) contrast(1.05); }
+  .about-photos:hover .photo-accent { filter: grayscale(0); transform: translateY(-4px); }
+  @media (max-width: 1040px) { .photo-accent { right: 4%; } }
 
   /* ---------- Experience ---------- */
   .timeline { display: flex; flex-direction: column; }
@@ -623,14 +657,14 @@
 
 <nav class="top">
   <div class="row">
-    <div class="brand">MS<span>.</span>dev</div>
+    <div class="brand">MS<span>.</span>DEV</div>
     <ul id="navlist">
       <span class="nav-underline" id="nav-underline"></span>
-      <li><a class="navlink" href="#about">about</a></li>
-      <li><a class="navlink" href="#experience">experience</a></li>
-      <li><a class="navlink" href="#projects">projects</a></li>
-      <li><a class="navlink" href="#skills">skills</a></li>
-      <li><a class="navlink" href="#contact">contact</a></li>
+      <li><a class="navlink" href="#about">About</a></li>
+      <li><a class="navlink" href="#experience">Experience</a></li>
+      <li><a class="navlink" href="#projects">Projects</a></li>
+      <li><a class="navlink" href="#skills">Skills</a></li>
+      <li><a class="navlink" href="#contact">Contact</a></li>
     </ul>
     <div class="navicons">
       <a href="https://github.com/mostofa-s-cse" aria-label="GitHub" target="_blank" rel="noopener">
@@ -708,9 +742,13 @@
     <div class="wrap">
       <div class="section-head" data-reveal>
         <span class="eyebrow">01 &middot; About</span>
-        <h2>Full lifecycle, not just the UI.</h2>
+        <h2><span class="rline"><span>Full lifecycle, not just the UI.</span></span></h2>
       </div>
       <div class="about-grid" data-reveal>
+        <div class="about-photos">
+          <img class="photo-main" src="img/headshot.jpg" alt="Md. Mostofa Shahid" loading="lazy">
+          <img class="photo-accent" src="img/workspace.jpg" alt="Mostofa at his desk" loading="lazy">
+        </div>
         <div>
           <p>Full-stack developer with 4+ years building and scaling production web applications. I work across the full lifecycle &mdash; API design, database optimization, payment integration, and Linux/Nginx deployment &mdash; and I'm comfortable owning a feature end-to-end in a fast-moving team, from schema to UI to production.</p>
           <p>Currently building Shomvob's multi-tenant HR Management System on Next.js, NestJS, and Supabase. Previously shipped SaaS features and a secure government payment portal.</p>
@@ -735,7 +773,7 @@
     <div class="wrap">
       <div class="section-head" data-reveal>
         <span class="eyebrow">02 &middot; Experience</span>
-        <h2>Where the work happened.</h2>
+        <h2><span class="rline"><span>Where the work happened.</span></span></h2>
       </div>
       <div class="timeline" data-reveal-group>
 
@@ -787,7 +825,7 @@
     <div class="wrap">
       <div class="section-head" data-reveal>
         <span class="eyebrow">03 &middot; Projects</span>
-        <h2>Things I've shipped.</h2>
+        <h2><span class="rline"><span>Things I've shipped.</span></span></h2>
       </div>
       <div class="projects" data-reveal-group>
 
@@ -824,7 +862,7 @@
     <div class="wrap">
       <div class="section-head" data-reveal>
         <span class="eyebrow">04 &middot; Skills</span>
-        <h2>The stack, end to end.</h2>
+        <h2><span class="rline"><span>The stack, end to end.</span></span></h2>
       </div>
       <div class="skill-groups" data-reveal-group>
         <div class="skill-group" style="--i:0">
@@ -912,7 +950,7 @@
     <div class="wrap">
       <div class="section-head" data-reveal>
         <span class="eyebrow">06 &middot; Education</span>
-        <h2>Where it started.</h2>
+        <h2><span class="rline"><span>Where it started.</span></span></h2>
       </div>
       <div class="edu-list" data-reveal-group>
         <div class="edu-item" style="--i:0">
@@ -940,7 +978,7 @@
   <div class="wrap">
     <div class="contact-head" data-reveal>
       <span class="eyebrow">07 &middot; Contact</span>
-      <h2>Let's build something.</h2>
+      <h2><span class="rline"><span>Let's build something.</span></span></h2>
     </div>
     <div class="contact-links" data-reveal>
       <a class="magnetic" href="mailto:mostofa.s.cse@gmail.com">mostofa.s.cse@gmail.com &nbsp;&rarr;</a>
